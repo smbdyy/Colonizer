@@ -4,18 +4,13 @@ public static class EnumUtils
 {
     public static T GetRandomEnumValue<T>() where T : Enum
     {
-        var values = Enum.GetValues(typeof(T));
-        if (values.Length == 0)
+        var values = Enum.GetValues(typeof(T)).Cast<T?>().Where(value => value != null).Cast<T>().ToList();
+
+        if (!values.Any())
         {
             throw new NotImplementedException();
         }
 
-        var value = (T?)values.GetValue(Random.Shared.Next(values.Length));
-        if (value == null)
-        {
-            throw new NotImplementedException();
-        }
-
-        return value;
+        return values[Random.Shared.Next(values.Count)];
     }
 }
