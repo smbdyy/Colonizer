@@ -1,4 +1,6 @@
-﻿namespace Domain.Fields;
+﻿using Domain.Common.Exceptions;
+
+namespace Domain.Fields;
 
 public struct FieldSize
 {
@@ -13,7 +15,7 @@ public struct FieldSize
 
     private static int ValidatePositive(int value)
     {
-        if (value <= 0) throw new NotImplementedException();
+        if (value <= 0) throw IncorrectValueException.MustBePositive(value);
         return value;
     }
 }

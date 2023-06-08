@@ -1,4 +1,5 @@
-﻿using Domain.Pixels;
+﻿using Domain.Common.Exceptions;
+using Domain.Pixels;
 
 namespace Domain.Fields;
 
@@ -10,7 +11,7 @@ public class FieldRow
     {
         if (size <= 0)
         {
-            throw new NotImplementedException();
+            throw IncorrectValueException.MustBePositive(size);
         }
 
         _pixels = new Pixel[size];
