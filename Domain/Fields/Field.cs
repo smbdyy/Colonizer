@@ -1,6 +1,4 @@
-﻿using Domain.Pixels;
-
-namespace Domain.Fields;
+﻿namespace Domain.Fields;
 
 public class Field
 {
