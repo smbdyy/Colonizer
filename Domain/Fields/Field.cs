@@ -11,9 +11,12 @@ public class Field
         {
             _rows[i] = new FieldRow(initialSize.Width);
         }
+
+        Size = initialSize;
     }
 
     public IReadOnlyCollection<FieldRow> Rows => _rows;
+    public FieldSize Size { get; private set; }
 
     public void Resize(FieldSize newSize)
     {
@@ -22,6 +25,8 @@ public class Field
         {
             _rows[i] = new FieldRow(newSize.Width);
         }
+
+        Size = newSize;
     }
 
     public void FillWithRandomColors()
