@@ -1,4 +1,6 @@
-﻿namespace Domain.Spaces;
+﻿using Domain.Common.Exceptions;
+
+namespace Domain.Spaces;
 
 public class SpacesInfo
 {
@@ -6,6 +8,11 @@ public class SpacesInfo
 
     public SpacesInfo(int[,] mask, int count)
     {
+        if (Count <= 0)
+        {
+            throw IncorrectValueException.MustBePositive(count);
+        }
+
         _mask = mask;
         Count = count;
     }
@@ -16,7 +23,7 @@ public class SpacesInfo
     {
         if (i < 0 || j < 0 || i >= _mask.GetLength(0) || j >= _mask.GetLength(1))
         {
-            throw new NotImplementedException();
+            throw OutOfBoundsException.TwoDimIndex(i, j);
         }
 
         return _mask[i, j];

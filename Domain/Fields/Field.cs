@@ -1,4 +1,5 @@
-﻿using Domain.Pixels;
+﻿using Domain.Common.Exceptions;
+using Domain.Pixels;
 
 namespace Domain.Fields;
 
@@ -18,7 +19,7 @@ public class Field
     {
         if (!IsInBounds(i, j))
         {
-            throw new NotImplementedException();
+            throw OutOfBoundsException.TwoDimIndex(i, j);
         }
 
         return _pixels[i, j];
