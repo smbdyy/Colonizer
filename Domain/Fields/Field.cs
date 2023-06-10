@@ -17,7 +17,7 @@ public class Field
 
     public Pixel PixelAt(int i, int j)
     {
-        if (i < 0 || j < 0 || i >= Size.Height || j >= Size.Width)
+        if (!IsInBounds(i, j))
         {
             throw new NotImplementedException();
         }
