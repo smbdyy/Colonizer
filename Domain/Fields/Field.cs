@@ -1,19 +1,40 @@
 ﻿using Domain.Common.Exceptions;
 using Domain.Pixels;
+using Domain.Spaces;
 
 namespace Domain.Fields;
 
 public class Field
 {
     private Pixel[,] _pixels;
+    private SpacesInfo _spacesInfo;
 
     public Field(FieldSize initialSize)
     {
-        _pixels = new Pixel[initialSize.Height, initialSize.Width];
         Size = initialSize;
+        _pixels = new Pixel[Size.Height, Size.Width];
+        var spacesMask = new int[Size.Height, Size.Width];
+        _spacesInfo = new SpacesInfo(spacesMask, 1);
     }
 
     public FieldSize Size { get; private set; }
+
+    public int SpacesCount => _spacesInfo.Count;
+
+    public int SpaceNumberAt(int i, int j)
+    {
+        if (!IsInBounds(i, j))
+        {
+            throw OutOfBoundsException.TwoDimIndex(i, j);
+        }
+
+        return _spacesInfo.Mask[i, j];
+    }
+
+    public void RecalculateSpaces()
+    {
+        _spacesInfo = SpacesFinder.FindSpaces(this);
+    }
 
     public Pixel PixelAt(int i, int j)
     {
