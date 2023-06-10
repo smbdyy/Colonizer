@@ -52,8 +52,8 @@ public static class SpacesFinder
             int i = neighbor.I;
             int j = neighbor.J;
 
-            var neighborColor = context.Field.PixelAt(i, j).Color;
-            if (!context.Field.IsInBounds(i, j) || context.Visited[i, j] || neighborColor != spaceColor)
+            if (!context.Field.IsInBounds(i, j) || context.Visited[i, j] ||
+                context.Field.PixelAt(i, j).Color != spaceColor)
             {
                 continue;
             }
