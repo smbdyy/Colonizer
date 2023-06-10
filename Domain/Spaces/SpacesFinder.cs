@@ -48,7 +48,7 @@ public static class SpacesFinder
         var spaceColor = context.Field.PixelAt(current.I, current.J).Color;
         foreach (Coordinate shift in Shifts)
         {
-            var neighbor = current.ShiftedTo(shift);
+            Coordinate neighbor = current.ShiftedTo(shift);
             int i = neighbor.I;
             int j = neighbor.J;
 
