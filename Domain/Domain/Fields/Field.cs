@@ -13,8 +13,21 @@ public class Field
     {
         Size = initialSize;
         _pixels = new Pixel[Size.Height, Size.Width];
+        InitializePixels();
+
         var spacesMask = new int[Size.Height, Size.Width];
         _spacesInfo = new SpacesInfo(spacesMask, 1);
+    }
+
+    private void InitializePixels()
+    {
+        for (int i = 0; i < Size.Height; i++)
+        {
+            for (int j = 0; j < Size.Width; j++)
+            {
+                _pixels[i, j] = new Pixel();
+            }
+        }
     }
 
     public FieldSize Size { get; private set; }
