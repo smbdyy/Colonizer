@@ -31,36 +31,36 @@ public static class SpacesFinder
 
     private static void ExecuteBfs(Coordinate start, SpacesFinderContext context)
     {
-        var field = context.Field;
-        var spaceColor = field.PixelAt(start.I, start.J).Color;
-        var spacesCount = context.SpacesCount;
-        var queue = context.Queue;
-        var visited = context.Visited;
-        var mask = context.Mask;
+        context.Queue.Enqueue(start);
+        context.Visited[start.I, start.J] = true;
+        context.Mask[start.I, start.J] = context.SpacesCount;
 
-        queue.Enqueue(start);
-        visited[start.I, start.J] = true;
-        mask[start.I, start.J] = spacesCount;
-
-        while (queue.Count > 0)
+        while (context.Queue.Count > 0)
         {
-            Coordinate current = queue.Peek();
-            queue.Dequeue();
+            Coordinate current = context.Queue.Peek();
+            context.Queue.Dequeue();
+            CheckNeighbors(current, context);
+        }
+    }
 
-            foreach (Coordinate shift in Shifts)
+    private static void CheckNeighbors( Coordinate current, SpacesFinderContext context)
+    {
+        var spaceColor = context.Field.PixelAt(current.I, current.J).Color;
+        foreach (Coordinate shift in Shifts)
+        {
+            var neighbor = current.ShiftedTo(shift);
+            int i = neighbor.I;
+            int j = neighbor.J;
+
+            var neighborColor = context.Field.PixelAt(i, j).Color;
+            if (!context.Field.IsInBounds(i, j) || context.Visited[i, j] || neighborColor != spaceColor)
             {
-                var next = current.ShiftedTo(shift);
-                int i = next.I;
-                int j = next.J;
-                if (!field.IsInBounds(i, j) || visited[i, j] || field.PixelAt(i, j).Color != spaceColor)
-                {
-                    continue;
-                }
-
-                visited[i, j] = true;
-                queue.Enqueue(next);
-                mask[i, j] = spacesCount;
+                continue;
             }
+
+            context.Visited[i, j] = true;
+            context.Queue.Enqueue(neighbor);
+            context.Mask[i, j] = context.SpacesCount;
         }
     }
 }
