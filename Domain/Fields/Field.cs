@@ -13,6 +13,7 @@ public class Field
     }
 
     public FieldSize Size { get; private set; }
+    public SpaceInfo? SpaceInfo { get; private set; }
 
     public Pixel PixelAt(int i, int j)
     {
@@ -32,12 +33,17 @@ public class Field
 
     public void FillWithRandomColors()
     {
-        for (var i = 0; i < Size.Height; i++)
+        for (int i = 0; i < Size.Height; i++)
         {
-            for (var j = 0; j < Size.Width; j++)
+            for (int j = 0; j < Size.Width; j++)
             {
                 _pixels[i, j].SetRandomColor();
             }
         }
+    }
+
+    public bool IsInBounds(int i, int j)
+    {
+        return i >= 0 && j >= 0 && i < Size.Height && j < Size.Width;
     }
 }
