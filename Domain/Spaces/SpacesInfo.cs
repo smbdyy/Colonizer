@@ -1,5 +1,3 @@
-﻿using Domain.Fields;
-
-namespace Domain.Spaces;
+﻿namespace Domain.Spaces;
 
 public record SpacesInfo(int[,] Mask, int Count);
