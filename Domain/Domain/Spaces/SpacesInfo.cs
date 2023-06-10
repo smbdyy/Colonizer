@@ -6,7 +6,7 @@ public class SpacesInfo
 {
     public SpacesInfo(int[,] mask, int count)
     {
-        if (Count <= 0)
+        if (count <= 0)
         {
             throw IncorrectValueException.MustBePositive(count);
         }
