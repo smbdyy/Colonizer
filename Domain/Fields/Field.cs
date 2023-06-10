@@ -1,4 +1,5 @@
 ﻿using Domain.Pixels;
+using Domain.Spaces;
 
 namespace Domain.Fields;
 
@@ -13,7 +14,7 @@ public class Field
     }
 
     public FieldSize Size { get; private set; }
-    public SpaceInfo? SpaceInfo { get; private set; }
+    public SpacesInfo? SpaceInfo { get; private set; }
 
     public Pixel PixelAt(int i, int j)
     {
