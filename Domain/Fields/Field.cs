@@ -1,39 +1,43 @@
-﻿namespace Domain.Fields;
+﻿using Domain.Pixels;
+
+namespace Domain.Fields;
 
 public class Field
 {
-    private FieldRow[] _rows;
+    private Pixel[,] _pixels;
 
     public Field(FieldSize initialSize)
     {
-        _rows = new FieldRow[initialSize.Height];
-        for (int i = 0; i < initialSize.Height; i++)
-        {
-            _rows[i] = new FieldRow(initialSize.Width);
-        }
-
+        _pixels = new Pixel[initialSize.Height, initialSize.Width];
         Size = initialSize;
     }
 
-    public IReadOnlyCollection<FieldRow> Rows => _rows;
     public FieldSize Size { get; private set; }
+
+    public Pixel PixelAt(int i, int j)
+    {
+        if (i < 0 || j < 0 || i >= Size.Height || j >= Size.Width)
+        {
+            throw new NotImplementedException();
+        }
+
+        return _pixels[i, j];
+    }
 
     public void Resize(FieldSize newSize)
     {
-        _rows = new FieldRow[newSize.Height];
-        for (int i = 0; i < newSize.Height; i++)
-        {
-            _rows[i] = new FieldRow(newSize.Width);
-        }
-
+        _pixels = new Pixel[newSize.Height, newSize.Width];
         Size = newSize;
     }
 
     public void FillWithRandomColors()
     {
-        foreach (var row in _rows)
+        for (var i = 0; i < Size.Height; i++)
         {
-            row.FillWithRandomColors();
+            for (var j = 0; j < Size.Width; j++)
+            {
+                _pixels[i, j].SetRandomColor();
+            }
         }
     }
 }
