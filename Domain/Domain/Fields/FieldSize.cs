@@ -4,10 +4,10 @@ namespace Domain.Fields;
 
 public struct FieldSize
 {
-    public FieldSize(int width, int height)
+    public FieldSize(int height, int width)
     {
-        Width = ValidatePositive(width);
         Height = ValidatePositive(height);
+        Width = ValidatePositive(width);
     }
 
     public int Width { get; }
