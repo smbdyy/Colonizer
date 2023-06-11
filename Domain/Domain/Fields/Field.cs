@@ -65,6 +65,67 @@ public class Field
         Size = newSize;
     }
 
+    public void Mutate()
+    {
+        ConsoleColor[] spaceColors = MapSpacesToColors();
+        var candidates = GetColorChangeCandidates().ToArray();
+
+        for (int i = 0; i < SpacesCount; i++)
+        {
+            var candidatesForCurrentSpace = candidates[i].ToArray();
+            int randomPixelNumber = Random.Shared.Next(candidatesForCurrentSpace.Length);
+            Coordinate pixel = candidatesForCurrentSpace[randomPixelNumber];
+
+            _pixels[pixel.I, pixel.J].Color = spaceColors[i];
+            _spacesInfo.Mask[pixel.I, pixel.J] = i;
+        }
+    }
+
+    private ConsoleColor[] MapSpacesToColors()
+    {
+        var colors = new ConsoleColor[SpacesCount];
+        for (int i = 0; i < Size.Height; i++)
+        {
+            for (int j = 0; j < Size.Width; j++)
+            {
+                colors[SpaceNumberAt(i, j)] = _pixels[i, j].Color;
+            }
+        }
+
+        return colors;
+    }
+
+    private IEnumerable<IEnumerable<Coordinate>> GetColorChangeCandidates()
+    {
+        var colorChangeCandidates = new List<Coordinate>[SpacesCount];
+        for (int i = 0; i < Size.Height; i++)
+        {
+            for (int j = 0; j < Size.Width; i++)
+            {
+                var currentCoordinate = new Coordinate(i, j);
+                AddNeighborsFromDifferentSpaces(currentCoordinate, colorChangeCandidates);
+            }
+        }
+
+        return colorChangeCandidates;
+    }
+
+    private void AddNeighborsFromDifferentSpaces(
+        Coordinate currentCoordinate, IReadOnlyList<List<Coordinate>> candidates)
+    {
+        var currentCoordinateSpace = SpaceNumberAt(currentCoordinate.I, currentCoordinate.J);
+        foreach (Coordinate shift in SpacesFinder.Shifts)
+        {
+            var neighbor = currentCoordinate.ShiftedTo(shift);
+            int i = neighbor.I;
+            int j = neighbor.J;
+            if (IsInBounds(i, j) && SpaceNumberAt(i, j) != currentCoordinateSpace)
+            {
+                candidates[currentCoordinateSpace].Add(neighbor);
+            }
+        }
+    }
+
     public void FillWithRandomColors()
     {
         for (int i = 0; i < Size.Height; i++)
