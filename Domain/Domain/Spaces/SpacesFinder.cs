@@ -43,7 +43,7 @@ public static class SpacesFinder
         }
     }
 
-    private static void CheckNeighbors( Coordinate current, SpacesFinderContext context)
+    private static void CheckNeighbors(Coordinate current, SpacesFinderContext context)
     {
         var spaceColor = context.Field.PixelAt(current.I, current.J).Color;
         foreach (Coordinate shift in Shifts)
