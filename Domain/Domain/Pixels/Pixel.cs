@@ -17,4 +17,9 @@ public class Pixel
     {
         Color = EnumUtils.GetRandomEnumValue<ConsoleColor>();
     }
+
+    public void SetRandomColorFromPool(ConsoleColor[] colors)
+    {
+        Color = colors[Random.Shared.Next(colors.Length)];
+    }
 }

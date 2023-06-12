@@ -137,6 +137,17 @@ public class Field
         }
     }
 
+    public void FillWithRandomColorsFromPool(ConsoleColor[] colors)
+    {
+        for (int i = 0; i < Size.Height; i++)
+        {
+            for (int j = 0; j < Size.Width; j++)
+            {
+                _pixels[i, j].SetRandomColorFromPool(colors);
+            }
+        }
+    }
+
     public bool IsInBounds(int i, int j)
     {
         return i >= 0 && j >= 0 && i < Size.Height && j < Size.Width;
