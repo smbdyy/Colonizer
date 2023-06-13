@@ -8,7 +8,7 @@ public struct Fraction
     {
         if (value is < 0 or > 1)
         {
-            throw IncorrectValueException.Probability(value);
+            throw IncorrectValueException.Fraction(value);
         }
 
         Value = value;
