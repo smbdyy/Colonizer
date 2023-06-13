@@ -30,7 +30,7 @@ public class Field
         }
     }
 
-    public FieldSize Size { get; private set; }
+    public FieldSize Size { get; }
 
     public int SpacesCount => _spacesInfo.Count;
 
