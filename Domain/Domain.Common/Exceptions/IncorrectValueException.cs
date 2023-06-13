@@ -7,4 +7,7 @@ public class IncorrectValueException : ColonizerDomainException
 
     public static IncorrectValueException MustBePositive(int value)
         => new($"value must be positive, {value} is given");
+
+    public static IncorrectValueException Probability(float value)
+        => new($"probability value must be >= 0 and <= 1, {value} is given");
 }
