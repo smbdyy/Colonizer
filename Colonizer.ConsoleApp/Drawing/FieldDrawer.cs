@@ -24,6 +24,7 @@ public class FieldDrawer
 
     private void DrawFully(Field field)
     {
+        Console.Clear();
         var size = field.Size;
         prevMap = new ConsoleColor[size.Height, size.Width];
 

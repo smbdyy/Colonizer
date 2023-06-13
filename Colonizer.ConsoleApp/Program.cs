@@ -9,8 +9,8 @@ field.FillWithRandomColorsFromPool(colors);
 field.RecalculateSpaces();
 
 var drawer = new FieldDrawer();
-Console.Clear();
 Console.SetWindowSize(size.Width + 5, size.Height + 5);
+
 while (true)
 {
     drawer.Draw(field);
