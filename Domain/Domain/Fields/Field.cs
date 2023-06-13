@@ -1,6 +1,8 @@
 ﻿using Domain.Common.Exceptions;
+using Domain.MutationProbabilityCalculators;
 using Domain.Pixels;
 using Domain.Spaces;
+using Domain.Utils;
 
 namespace Domain.Fields;
 
@@ -8,11 +10,13 @@ public class Field
 {
     private readonly Pixel[,] _pixels;
     private SpacesInfo _spacesInfo;
+    private readonly IMutationProbabilityCalculator _mutationProbabilityCalculator;
 
-    public Field(FieldSize initialSize)
+    public Field(FieldSize initialSize, IMutationProbabilityCalculator mutationProbabilityCalculator)
     {
         Size = initialSize;
         _pixels = new Pixel[Size.Height, Size.Width];
+        _mutationProbabilityCalculator = mutationProbabilityCalculator;
         InitializePixels();
 
         var spacesMask = new int[Size.Height, Size.Width];
@@ -61,22 +65,50 @@ public class Field
 
     public void Mutate()
     {
-        ConsoleColor[] spaceColors = MapSpacesToColors();
+        RecalculateSpaces();
+
+        var mutationFlags = CalculateMutationFlags().ToArray();
+        var spaceColors = MapSpacesToColors().ToArray();
         var candidates = GetColorChangeCandidates().ToArray();
 
         for (int i = 0; i < SpacesCount; i++)
         {
+            if (!mutationFlags[i]) continue;
+
             var candidatesForCurrentSpace = candidates[i].ToArray();
             int randomPixelNumber = Random.Shared.Next(candidatesForCurrentSpace.Length);
             Coordinate pixel = candidatesForCurrentSpace[randomPixelNumber];
 
             _pixels[pixel.I, pixel.J].Color = spaceColors[i];
         }
-
-        RecalculateSpaces();
     }
 
-    private ConsoleColor[] MapSpacesToColors()
+    private IEnumerable<bool> CalculateMutationFlags()
+    {
+        return CalculateMutationProbabilities().Select(RandomUtils.GetTrueWithProbability);
+    }
+
+    private IEnumerable<Fraction> CalculateMutationProbabilities()
+    {
+        return CountEverySpacePixelsAmount().Select(
+            x => _mutationProbabilityCalculator.GetProbabilityFromSpaceFraction(x / (Size.Height * Size.Width)));
+    }
+
+    private IEnumerable<int> CountEverySpacePixelsAmount()
+    {
+        var spacePixelsCount = new int[SpacesCount];
+        for (int i = 0; i < Size.Height; i++)
+        {
+            for (int j = 0; j < Size.Width; j++)
+            {
+                spacePixelsCount[SpaceNumberAt(i, j)]++;
+            }
+        }
+
+        return spacePixelsCount;
+    }
+
+    private IEnumerable<ConsoleColor> MapSpacesToColors()
     {
         var colors = new ConsoleColor[SpacesCount];
         for (int i = 0; i < Size.Height; i++)

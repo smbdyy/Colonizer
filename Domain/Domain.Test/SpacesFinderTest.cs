@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Domain.Fields;
+using Domain.MutationProbabilityCalculators;
 using Xunit;
 
 namespace Domain.Test;
@@ -23,7 +24,7 @@ public class SpacesFinderTest
     public void ShouldFindSpacesCorrectly(ConsoleColor[,] colorsMatrix, int[,] spaces, int spacesCount)
     {
         var size = new FieldSize(colorsMatrix.GetLength(0), colorsMatrix.GetLength(1));
-        var field = new Field(size);
+        var field = new Field(size, new FullMutationProbabilityCalculator());
 
         for (int i = 0; i < size.Height; i++)
         {

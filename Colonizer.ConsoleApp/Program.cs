@@ -1,8 +1,9 @@
 ﻿using Colonizer.ConsoleApp.Drawing;
 using Domain.Fields;
+using Domain.MutationProbabilityCalculators;
 
 var size = new FieldSize(10, 10);
-var field = new Field(size);
+var field = new Field(size, new SpaceFractionMutationProbabilityCalculator());
 
 var colors = new[] { ConsoleColor.Blue, ConsoleColor.Green, ConsoleColor.Red };
 field.FillWithRandomColorsFromPool(colors);
