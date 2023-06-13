@@ -6,7 +6,7 @@ namespace Domain.Fields;
 
 public class Field
 {
-    private Pixel[,] _pixels;
+    private readonly Pixel[,] _pixels;
     private SpacesInfo _spacesInfo;
 
     public Field(FieldSize initialSize)
