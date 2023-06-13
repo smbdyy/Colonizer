@@ -100,7 +100,7 @@ public class Field
         var colorChangeCandidates = new List<Coordinate>[SpacesCount];
         for (int i = 0; i < Size.Height; i++)
         {
-            for (int j = 0; j < Size.Width; i++)
+            for (int j = 0; j < Size.Width; j++)
             {
                 var currentCoordinate = new Coordinate(i, j);
                 AddNeighborsFromDifferentSpaces(currentCoordinate, colorChangeCandidates);
