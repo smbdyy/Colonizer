@@ -98,6 +98,7 @@ public class Field
     private IEnumerable<IEnumerable<Coordinate>> GetColorChangeCandidates()
     {
         var colorChangeCandidates = new List<Coordinate>[SpacesCount];
+        Array.Fill(colorChangeCandidates, new List<Coordinate>());
         for (int i = 0; i < Size.Height; i++)
         {
             for (int j = 0; j < Size.Width; j++)
