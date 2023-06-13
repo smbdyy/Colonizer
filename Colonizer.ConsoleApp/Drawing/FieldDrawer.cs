@@ -1,15 +1,27 @@
-﻿using Domain.Fields;
+﻿using Colonizer.ConsoleApp.Common.Exceptions;
+using Domain.Fields;
 
 namespace Colonizer.ConsoleApp.Drawing;
 
 public class FieldDrawer
 {
-    private ConsoleColor[,]? prevMap;
+    private ConsoleColor[,]? _prevMap;
+    private readonly int _scale;
+
+    public FieldDrawer(int scale = 1)
+    {
+        if (scale < 1)
+        {
+            throw new ColonizerConsoleAppException($"scale value must be >= 1, {scale} is given");
+        }
+
+        _scale = scale;
+    }
 
     public void Draw(Field field)
     {
         var backgroundColor = Console.BackgroundColor;
-        if (prevMap == null || field.Size.Height != prevMap.GetLength(0) || field.Size.Width != prevMap.GetLength(1))
+        if (_prevMap == null || field.Size.Height != _prevMap.GetLength(0) || field.Size.Width != _prevMap.GetLength(1))
         {
             DrawFully(field);
         }
@@ -19,23 +31,23 @@ public class FieldDrawer
         }
 
         Console.BackgroundColor = backgroundColor;
-        Console.SetCursorPosition(0, field.Size.Height);
+        Console.SetCursorPosition(0, field.Size.Height * _scale);
     }
 
     private void DrawFully(Field field)
     {
         Console.Clear();
         var size = field.Size;
-        prevMap = new ConsoleColor[size.Height, size.Width];
+        _prevMap = new ConsoleColor[size.Height, size.Width];
 
         for (int i = 0; i < size.Height; i++)
         {
             for (int j = 0; j < size.Width; j++)
             {
                 var color = field.PixelAt(i, j).Color;
-                prevMap[i, j] = color;
+                _prevMap[i, j] = color;
                 Console.BackgroundColor = color;
-                Console.Write(' ');
+                DrawPixelAt(j * _scale, _scale * (i + 1));
             }
             Console.WriteLine();
         }
@@ -48,12 +60,24 @@ public class FieldDrawer
             for (int j = 0; j < field.Size.Width; j++)
             {
                 var color = field.PixelAt(i, j).Color;
-                if (prevMap![i, j] == color) continue;
+                if (_prevMap![i, j] == color) continue;
 
                 Console.SetCursorPosition(j, i);
                 Console.BackgroundColor = color;
+                DrawPixelAt(j * _scale, _scale * (i + 1));
+                _prevMap[i, j] = color;
+            }
+        }
+    }
+
+    private void DrawPixelAt(int left, int top)
+    {
+        for (int i = 0; i < _scale; i++)
+        {
+            Console.SetCursorPosition(left, top + i);
+            for (int j = 0; j < _scale; j++)
+            {
                 Console.Write(' ');
-                prevMap[i, j] = color;
             }
         }
     }
