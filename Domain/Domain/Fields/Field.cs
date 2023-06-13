@@ -59,12 +59,6 @@ public class Field
         return _pixels[i, j];
     }
 
-    public void Resize(FieldSize newSize)
-    {
-        _pixels = new Pixel[newSize.Height, newSize.Width];
-        Size = newSize;
-    }
-
     public void Mutate()
     {
         ConsoleColor[] spaceColors = MapSpacesToColors();
