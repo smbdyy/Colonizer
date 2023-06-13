@@ -77,8 +77,9 @@ public class Field
             Coordinate pixel = candidatesForCurrentSpace[randomPixelNumber];
 
             _pixels[pixel.I, pixel.J].Color = spaceColors[i];
-            _spacesInfo.Mask[pixel.I, pixel.J] = i;
         }
+
+        RecalculateSpaces();
     }
 
     private ConsoleColor[] MapSpacesToColors()
