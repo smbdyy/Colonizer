@@ -73,7 +73,7 @@ public class Field
 
         for (int i = 0; i < SpacesCount; i++)
         {
-            if (!mutationFlags[i]) continue;
+            if (!mutationFlags[i] || !candidates[i].Any()) continue;
 
             var candidatesForCurrentSpace = candidates[i].ToArray();
             int randomPixelNumber = Random.Shared.Next(candidatesForCurrentSpace.Length);
@@ -91,7 +91,7 @@ public class Field
     private IEnumerable<Fraction> CalculateMutationProbabilities()
     {
         return CountEverySpacePixelsAmount().Select(
-            x => _mutationProbabilityCalculator.GetProbabilityFromSpaceFraction(x / (Size.Height * Size.Width)));
+            x => _mutationProbabilityCalculator.GetProbabilityFromSpaceFraction((float)x / (Size.Height * Size.Width)));
     }
 
     private IEnumerable<int> CountEverySpacePixelsAmount()
